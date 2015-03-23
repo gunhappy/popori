@@ -11,7 +11,43 @@ var GameLayer = cc.LayerColor.extend({
         this.player2 = new Player2();
         this.player2.setPosition(new cc.Point(400,80));
         this.addChild(this.player2);
+        this.addKeyboardHandlers();
         return true;
+    },
+    
+    addKeyboardHandlers: function(){
+        var self = this;
+        cc.eventManager.addListener({
+            event: cc.EventListener.KEYBOARD,
+            onKeyPressed: function( keyCode, event){
+                self.onKeyDown( keyCode, event);
+            },
+            onKeyReleased: function( keyCode, event){
+                self.onKeyUp( keyCode, event);
+            }
+        }, this);
+    },
+    
+    onKeyDown: function( keyCode, event){
+        //player1
+        if(keyCode == 39){
+            this.player1.moving = Player1.MOVING.RIGHT;
+            this.player1.move();
+        }//moveRight
+        else if(keyCode == 37){
+            this.player1.moving = Player1.MOVING.LEFT;
+            this.player1.move();
+        }//moveLeft
+        //player2
+        else if(keyCode == 88){
+            
+        }//moveRight
+        else if(keyCode == 90){
+            
+        }//moveLeft
+    },
+    
+    onKeyUp: function( keyCode, event){
     }
 });
  
