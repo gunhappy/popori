@@ -34,16 +34,18 @@ var GameLayer = cc.LayerColor.extend({
             this.player1.moving = Player1.MOVING.RIGHT;
             this.player1.move();
         }//moveRight
-        else if(keyCode == 37){
+        if(keyCode == 37){
             this.player1.moving = Player1.MOVING.LEFT;
             this.player1.move();
         }//moveLeft
         //player2
-        else if(keyCode == 88){
-            
+        if(keyCode == 88){
+            this.player2.moving = Player2.MOVING.RIGHT;
+            this.player2.move();
         }//moveRight
-        else if(keyCode == 90){
-            
+        if(keyCode == 90){
+            this.player2.moving = Player2.MOVING.LEFT;
+            this.player2.move();
         }//moveLeft
     },
     
