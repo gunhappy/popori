@@ -8,6 +8,9 @@ var GameLayer = cc.LayerColor.extend({
         this.player1 = new Player1();
         this.player1.setPosition(new cc.Point(100,80));
         this.addChild(this.player1);
+        this.player2 = new Player2();
+        this.player2.setPosition(new cc.Point(400,80));
+        this.addChild(this.player2);
         return true;
     }
 });
