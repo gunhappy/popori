@@ -5,6 +5,9 @@ var GameLayer = cc.LayerColor.extend({
         this.Background = new Background();
         this.Background.setPosition( new cc.Point(screenWidth/2,screenHeight/2));
         this.addChild(this.Background);
+        this.player1 = new Player1();
+        this.player1.setPosition(new cc.Point(100,80));
+        this.addChild(this.player1);
         return true;
     }
 });
