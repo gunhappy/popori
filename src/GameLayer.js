@@ -12,6 +12,19 @@ var GameLayer = cc.LayerColor.extend({
         this.player2.setPosition(new cc.Point(400,80));
         this.addChild(this.player2);
         this.addKeyboardHandlers();
+        this.player1.scheduleUpdate();
+        this.player2.scheduleUpdate();
+        
+        if(cc.sys.capabilities.hasOwnProperty('mouse') ) {
+            cc.eventManager.addListener({
+                    event: cc.EventListener.MOUSE,
+                    onMouseDown: function(event){
+                        if(event.getButton() == cc.EventMouse.BUTTON_LEFT){
+                            cc.log(event.getLocationX()+","+event.getLocationY());
+                        }
+                    }
+            },this);
+        }
         return true;
     },
     
@@ -20,37 +33,15 @@ var GameLayer = cc.LayerColor.extend({
         cc.eventManager.addListener({
             event: cc.EventListener.KEYBOARD,
             onKeyPressed: function( keyCode, event){
-                self.onKeyDown( keyCode, event);
+                Player1.MOVE_DIR[ keyCode ] = true;
+                Player2.MOVE_DIR[ keyCode ] = true;
             },
             onKeyReleased: function( keyCode, event){
-                self.onKeyUp( keyCode, event);
+                Player1.MOVE_DIR[ keyCode ] = false;
+                Player2.MOVE_DIR[ keyCode ] = false;
             }
         }, this);
     },
-    
-    onKeyDown: function( keyCode, event){
-        //player1
-        if(keyCode == 39){
-            this.player1.moving = Player1.MOVING.RIGHT;
-            this.player1.move();
-        }//moveRight
-        if(keyCode == 37){
-            this.player1.moving = Player1.MOVING.LEFT;
-            this.player1.move();
-        }//moveLeft
-        //player2
-        if(keyCode == 88){
-            this.player2.moving = Player2.MOVING.RIGHT;
-            this.player2.move();
-        }//moveRight
-        if(keyCode == 90){
-            this.player2.moving = Player2.MOVING.LEFT;
-            this.player2.move();
-        }//moveLeft
-    },
-    
-    onKeyUp: function( keyCode, event){
-    }
 });
  
 var StartScene = cc.Scene.extend({

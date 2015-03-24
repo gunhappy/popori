@@ -4,19 +4,16 @@ var Player1 = cc.Sprite.extend({
         this.initWithFile('res/images/player1.png');
         this.moving = 0;
     },
-    
-    move: function(){
+    update: function( dt ) {
         var pos = this.getPosition();
-        if(this.moving == Player1.MOVING.RIGHT){
-            this.setPosition( new cc.Point( pos.x + 10, pos.y ) );
+        if( Player1.MOVE_DIR[ cc.KEY.left ]&&pos.x>0) {
+            pos.x -= 10;
         }
-        else if(this.moving == Player1.MOVING.LEFT){
-            this.setPosition( new cc.Point( pos.x - 10, pos.y ) );
+        if( Player1.MOVE_DIR[ cc.KEY.right ]&&pos.x<screenWidth) {
+            pos.x += 10;
         }
+        this.setPosition( cc.p( pos.x, pos.y ) );
     }
 });
 
-Player1.MOVING = {
-    RIGHT : 1,
-    LEFT : 2
-};
+Player1.MOVE_DIR = [];
