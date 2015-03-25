@@ -14,7 +14,7 @@ var GameLayer = cc.LayerColor.extend({
         this.addKeyboardHandlers();
         this.player1.scheduleUpdate();
         this.player2.scheduleUpdate();
-        
+        /*
         if(cc.sys.capabilities.hasOwnProperty('mouse') ) {
             cc.eventManager.addListener({
                     event: cc.EventListener.MOUSE,
@@ -24,7 +24,7 @@ var GameLayer = cc.LayerColor.extend({
                         }
                     }
             },this);
-        }
+        }*/
         return true;
     },
     
