@@ -8,5 +8,5 @@ var Star = cc.Sprite.extend({
         var pos = this.getPosition();
         this.vy = -5;
         this.setPosition(pos.x,pos.y+this.vy);
-    }                         
+    }                       
 });

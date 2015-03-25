@@ -1,3 +1,5 @@
+var score1 =0;
+var score2 =0;
 var GameLayer = cc.LayerColor.extend({
     init: function() {
         this._super( new cc.Color( 127, 127, 127, 255 ) );
@@ -16,6 +18,16 @@ var GameLayer = cc.LayerColor.extend({
         this.addKeyboardHandlers();
         this.player1.scheduleUpdate();
         this.player2.scheduleUpdate();
+        
+        this.scoreLabel1 = cc.LabelTTF.create('0','Arial',40);
+        this.scoreLabel1.setPosition(new cc.Point(50,550));
+        this.addChild(this.scoreLabel1);
+        this.scoreLabel1.setString(score1);
+        
+        this.scoreLabel2 = cc.LabelTTF.create('0','Arial',40);
+        this.scoreLabel2.setPosition(new cc.Point(50,500));
+        this.addChild(this.scoreLabel2);
+        this.scoreLabel2.setString(score2);
         
         this.scheduleUpdate();
         
