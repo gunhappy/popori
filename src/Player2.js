@@ -1,6 +1,7 @@
 var Player2 = cc.Sprite.extend({
     
     ctor: function(){
+        
         this._super();
         this.initWithFile( 'res/images/player2.png' );
         this.moving = 0;
@@ -10,11 +11,13 @@ var Player2 = cc.Sprite.extend({
     },   
     
     update: function( dt ) {
+        
         this.updateMovement();
         this.updateJump();
     },
     
     updateMovement: function(){
+        
         var pos = this.getPosition();
         
         if( Player2.MOVE_DIR[ cc.KEY.a ] && pos.x > 0 ) {
@@ -29,6 +32,7 @@ var Player2 = cc.Sprite.extend({
     },
         
     updateJump: function(){
+        
         var pos = this.getPosition();
         
         if( pos.y == 80 ){
@@ -36,7 +40,7 @@ var Player2 = cc.Sprite.extend({
             this.jump = false;
         }
         
-        if( Player2.MOVE_DIR[ cc.KEY.w ] ) {
+        if( Player2.MOVE_DIR [ cc.KEY.w ] ) {
             if( pos.y < 250 && this.jump == false ){
                 this.vy = 12;
                 this.jump = true;
@@ -47,7 +51,7 @@ var Player2 = cc.Sprite.extend({
             this.vy -= 12;
         }
         
-        this.setPosition( cc.p( pos.x, pos.y +this.vy) );
+        this.setPosition( cc.p( pos.x, pos.y + this.vy ) );
     }
 });
 

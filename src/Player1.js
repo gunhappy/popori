@@ -1,6 +1,7 @@
 var Player1 = cc.Sprite.extend({
     
     ctor: function(){
+        
         this._super();
         this.initWithFile( 'res/images/player1.png' );
         this.moving = 0;
@@ -10,6 +11,7 @@ var Player1 = cc.Sprite.extend({
     },
     
     update: function( dt ) {
+        
         this.updateMovement();
         this.updateJump();
     },
@@ -29,6 +31,7 @@ var Player1 = cc.Sprite.extend({
     },
     
     updateJump: function(){
+        
         var pos = this.getPosition();
         
         if( pos.y == 80 ){
@@ -43,11 +46,11 @@ var Player1 = cc.Sprite.extend({
             }
         }
         
-        if(pos.y > 250){
+        if( pos.y > 250 ){
             this.vy -= 12;
         }
         
-        this.setPosition( cc.p( pos.x, pos.y +this.vy) );
+        this.setPosition( cc.p( pos.x, pos.y + this.vy ) );
     }
 });
 
