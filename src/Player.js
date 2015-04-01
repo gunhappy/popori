@@ -1,17 +1,15 @@
-var Player1 = cc.Sprite.extend({
+var Player = cc.Sprite.extend({
     
-    ctor: function(){
-        
+    ctor: function( MOVE_DIR , picture ){
         this._super();
-        this.initWithFile( 'res/images/player1.png' );
+        this.initWithFile( picture );
         this.moving = 0;
-        
+        this.keyboard = MOVE_DIR;
         this.vy = 0;
         this.jump == false;
     },
     
     update: function( dt ) {
-        
         this.updateMovement();
         this.updateJump();
     },
@@ -19,11 +17,11 @@ var Player1 = cc.Sprite.extend({
     updateMovement: function(){
         var pos = this.getPosition();
         
-        if( Player1.MOVE_DIR[ cc.KEY.left ] && pos.x > 0 ) {
+        if( Player.MOVE_DIR[ this.keyboard[0] ] && pos.x > 0 ) {
             pos.x -= 10;
         }
         
-        if( Player1.MOVE_DIR[ cc.KEY.right ] && pos.x < screenWidth ) {
+        if( Player.MOVE_DIR[  this.keyboard[1] ] && pos.x < screenWidth ) {
             pos.x += 10;
         }
         
@@ -31,7 +29,6 @@ var Player1 = cc.Sprite.extend({
     },
     
     updateJump: function(){
-        
         var pos = this.getPosition();
         
         if( pos.y == 80 ){
@@ -39,7 +36,7 @@ var Player1 = cc.Sprite.extend({
             this.jump = false;
         }
         
-        if( Player1.MOVE_DIR [ cc.KEY.up ] ) {
+        if( Player.MOVE_DIR [ this.keyboard[2] ] ) {
             if( pos.y < 250 && this.jump == false ){
                 this.vy = 12;
                 this.jump = true;
@@ -54,4 +51,7 @@ var Player1 = cc.Sprite.extend({
     }
 });
 
-Player1.MOVE_DIR = [];
+Player.MOVE_DIR = {
+    Player1: [cc.KEY.left,cc.KEY.right,cc.KEY.up],
+    Player2: [cc.KEY.a,cc.KEY.d,cc.KEY.w] 
+};

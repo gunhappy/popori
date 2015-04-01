@@ -4,7 +4,6 @@ var score2 =0;
 var GameLayer = cc.LayerColor.extend({
     
     init: function() {
-        
         this._super( new cc.Color( 127, 127, 127, 255 ) );
         this.setPosition( new cc.Point( 0, 0 ) );
         
@@ -12,11 +11,11 @@ var GameLayer = cc.LayerColor.extend({
         this.Background.setPosition( new cc.Point( screenWidth/2 , screenHeight/2 ) );
         this.addChild( this.Background );
         
-        this.player1 = new Player1();
+        this.player1 = new Player( Player.MOVE_DIR.Player1, res.Player1_pic );
         this.player1.setPosition( new cc.Point( 100,80 ) );
         this.addChild( this.player1 );
         
-        this.player2 = new Player2();
+        this.player2 = new Player( Player.MOVE_DIR.Player2, res.Player2_pic );
         this.player2.setPosition( new cc.Point( 400,80 ) );
         this.addChild( this.player2 ) ;
         
@@ -42,7 +41,6 @@ var GameLayer = cc.LayerColor.extend({
     },
     
     update: function(dt){
-        
         this.randomSpawnStar();
         this.getScoreStar();
     },
@@ -53,18 +51,17 @@ var GameLayer = cc.LayerColor.extend({
         cc.eventManager.addListener({
             event: cc.EventListener.KEYBOARD,
             onKeyPressed: function( keyCode, event ){
-                Player1.MOVE_DIR[ keyCode ] = true;
-                Player2.MOVE_DIR[ keyCode ] = true;
+                Player.MOVE_DIR[ keyCode ] = true;
+                Player.MOVE_DIR[ keyCode ] = true;
             },
             onKeyReleased: function( keyCode, event ){
-                Player1.MOVE_DIR[ keyCode ] = false;
-                Player2.MOVE_DIR[ keyCode ] = false;
+                Player.MOVE_DIR[ keyCode ] = false;
+                Player.MOVE_DIR[ keyCode ] = false;
             }
         }, this);
     },
     
     randomSpawnStar: function(){
-        
         var randNum = Math.floor( Math.random() * 30 );
         
         if( randNum == 1 ){
@@ -109,7 +106,6 @@ var GameLayer = cc.LayerColor.extend({
  
 var StartScene = cc.Scene.extend({
     onEnter: function() {
-        
         this._super();
         var layer = new GameLayer();
         layer.init();
