@@ -1,5 +1,6 @@
 var score1 =0;
 var score2 =0;
+var time = 120;
 
 var GameLayer = cc.LayerColor.extend({
     
@@ -35,6 +36,12 @@ var GameLayer = cc.LayerColor.extend({
         this.scoreLabel2.setString( score2 );
         this.scoreLabel2.setColor( new cc.Color( 0,0,255 ) );
            
+        this.timeLable = cc.LabelTTF.create( '0','Arial',40 );
+        this.timeLable.setPosition( new cc.Point( screenWidth/2 ,550 ) );
+        this.addChild( this.timeLable );
+        this.timeLable.setString( time );
+        this.timeLable.setColor( new cc.Color( 178, 0 ,25 ) );
+        
         this.scheduleUpdate();
         
         return true;
@@ -43,6 +50,7 @@ var GameLayer = cc.LayerColor.extend({
     update: function(dt){
         this.randomSpawnStar();
         this.getScoreStar();
+        this.countdown();
     },
     
     addKeyboardHandlers: function(){
@@ -101,6 +109,21 @@ var GameLayer = cc.LayerColor.extend({
                 }
             }
         }
+    },
+    
+    countdown: function(){
+        if( time > 0 ){
+            this.schedule( this.counter,1,0 );
+        }
+        
+        else if( time == 0 ){
+            this.unscheduleUpdate();
+        }
+    },
+    
+    counter: function(dt){
+        time--;
+        this.timeLable.setString( time );
     }
 });
  
