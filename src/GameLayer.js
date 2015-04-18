@@ -50,6 +50,7 @@ var GameLayer = cc.LayerColor.extend({
     update: function(dt){
         this.randomSpawnStar();
         this.getScoreStar();
+        this.checkPlayerCollide();
         this.countdown();
     },
     
@@ -88,17 +89,15 @@ var GameLayer = cc.LayerColor.extend({
         
         for( var i=0 ; i < this.stars.length ; i++ ){
             if( this.stars[i] instanceof Star ){
-                var player1Pos = this.player1.getPosition();
-                var player2Pos = this.player2.getPosition();
 	            var starPos = this.stars[i].getPosition();
                 
-                if(( ( Math.abs( player1Pos.x - starPos.x ) <= 35 ) && ( Math.abs( player1Pos.y - starPos.y ) <= 35 ) ) ){
+                if( this.checkCollide( this.player1, this.stars[i], 35 ) ){
                     this.removeChild( this.stars[i] );
                     score1++;
                     this.scoreLabel1.setString( score1 );
                 }
                 
-                else if(( ( Math.abs( player2Pos.x - starPos.x ) <= 35 ) && ( Math.abs( player2Pos.y - starPos.y ) <= 35 ) ) ){
+                else if( this.checkCollide( this.player2, this.stars[i], 35 ) ){
                     this.removeChild( this.stars[i] );
                     score2++;
                     this.scoreLabel2.setString( score2 );
@@ -108,6 +107,25 @@ var GameLayer = cc.LayerColor.extend({
                     this.removeChild( this.stars[i] );
                 }
             }
+        }
+    },
+    
+    checkCollide: function( object1 ,object2, scope ){
+        var Object1Pos = object1.getPosition();
+        var Object2Pos = object2.getPosition();
+        return ( Math.abs( Object1Pos.x - Object2Pos.x ) <= scope ) && ( Math.abs( Object1Pos.y - Object2Pos.y ) <= scope );
+    },
+    
+    checkPlayerCollide: function(){
+        if( this.checkCollide( this.player1, this.player2, 55 )){
+            if( this.player1.getPositionX() < this.player2.getPositionX() ){
+                this.player1.reboundLeft();
+                this.player2.reboundRight();    
+            }
+            else {
+                this.player2.reboundLeft();
+                this.player1.reboundRight();
+             }
         }
     },
     
