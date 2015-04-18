@@ -48,6 +48,16 @@ var Player = cc.Sprite.extend({
         }
         
         this.setPosition( cc.p( pos.x, pos.y + this.vy ) );
+    },
+    
+    reboundLeft: function(){
+        var pos = this.getPosition();
+        this.setPosition( cc.p( pos.x - 90 , pos.y ) );
+    },
+    
+    reboundRight: function(){
+        var pos = this.getPosition();
+        this.setPosition( cc.p( pos.x + 90 , pos.y ) );
     }
 });
 
