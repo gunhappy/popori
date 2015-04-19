@@ -3,7 +3,7 @@ var res = {
     Player1_pic : "res/images/player1.png",
     Player2_pic : "res/images/player2.png",
     Cream_pic : "res/images/food/cream.png",
-    Crissant_pic : "res/images/food/croissant.png",
+    Croissant_pic : "res/images/food/croissant.png",
     Donut_pic : "res/images/food/donut.png",
     Hamburger_pic : "res/images/food/hamburger.png",
     Hotdog_pic : "res/images/food/hotdog.png",

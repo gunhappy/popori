@@ -1,11 +1,11 @@
-var Cream = Food.extend({
+var Pizza = Food.extend({
    
     ctor: function(){
         this._super();
-        this.initWithFile( res.Cream_pic );
+        this.initWithFile( res.Pizza_pic );
     },
     
     getScore: function(){
-        return 3;
+        return 5;
     }
 });

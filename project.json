@@ -16,6 +16,14 @@
         "src/Background.js",
         "src/Player.js",
         "src/Food.js",
-        "src/Cream.js"
+        "src/Cream.js",
+        "src/Croissant.js",
+        "src/Donut.js",
+        "src/Hamburger.js",
+        "src/Hotdog.js",
+        "src/Macaroon.js",
+        "src/Pizza.js",
+        "src/Sandwich.js",
+        "src/Unji.js"
     ]
 }

@@ -1,8 +1,8 @@
-var Cream = Food.extend({
+var Sandwich = Food.extend({
    
     ctor: function(){
         this._super();
-        this.initWithFile( res.Cream_pic );
+        this.initWithFile( res.Sandwich_pic );
     },
     
     getScore: function(){

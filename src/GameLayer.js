@@ -56,8 +56,8 @@ var GameLayer = cc.LayerColor.extend({
     },
     
     update: function(dt){
-        this.randomSpawnStar();
-        this.getScoreStar();
+        this.randomSpawnFood();
+        this.getScoreFood();
         this.checkPlayerCollide();
         this.countdown();
     },
@@ -78,48 +78,70 @@ var GameLayer = cc.LayerColor.extend({
         }, this);
     },
     
-    randomSpawnStar: function(){
-        var randNum = Math.floor( Math.random() * 50 );
+    randomSpawnFood: function(){
+        var randNum = Math.floor( Math.random() * 40 );
         var randPosX = Math.floor( Math.random() * screenWidth );
 
         if( randNum == 1 ){            
-            this.star = new Cream();
-            this.addChild( this.star );
-            this.star.setPosition( new cc.Point( randPosX,screenHeight ) );
-            this.star.scheduleUpdate();
+            this.randFoodType();
+            this.addChild( this.food );
+            this.food.setPosition( new cc.Point( randPosX,screenHeight ) );
+            this.food.scheduleUpdate();
         }
-        
-        else if( randNum == 2 ){
-            this.star = new Cream();
-            this.addChild( this.star );
-            this.star.setPosition( new cc.Point( randPosX,screenHeight ) );
-            this.star.scheduleUpdate();
-        }
-        
     },
     
-    getScoreStar: function(){
-        this.stars = [];
-        this.stars = this.getChildren();
+    randFoodType: function(){
+        var randNum = Math.floor( Math.random() * 32 );
+        if( randNum == 1|| randNum == 2|| randNum == 3|| randNum == 4|| randNum == 5){
+            this.food = new Croissant(); }
+        else if( randNum == 6|| randNum == 7|| randNum == 8|| randNum == 9 ){
+            this.food = new Cream();
+        }
+        else if( randNum == 10|| randNum == 11|| randNum == 12|| randNum == 13 ){
+            this.food = new Sandwich();
+        }
+        else if( randNum == 14|| randNum == 15|| randNum == 16 ){
+            this.food = new Pizza();
+        }
+        else if( randNum == 17|| randNum == 18|| randNum == 19 ){
+            this.food = new Donut();
+        }
+        else if( randNum == 20|| randNum == 21 ){
+            this.food = new Hamburger();
+        }
+        else if( randNum == 22|| randNum == 23 ){
+            this.food = new Macaroon();
+        }
+        else if( randNum == 24|| randNum == 25|| randNum == 26 ){
+            this.food = new Unji();
+        }
+        else{
+            this.food = new Hotdog();
+        }
+    },
+    
+    getScoreFood: function(){
+        this.foods = [];
+        this.foods = this.getChildren();
         
-        for( var i=0 ; i < this.stars.length ; i++ ){
-            if( this.stars[i] instanceof Food ){
-	            var starPos = this.stars[i].getPosition();
+        for( var i=0 ; i < this.foods.length ; i++ ){
+            if( this.foods[i] instanceof Food ){
+	            var foodPos = this.foods[i].getPosition();
                 
-                if( this.checkCollide( this.player1, this.stars[i], 35 ) ){
-                    this.removeChild( this.stars[i] );
-                    score1++;
+                if( this.checkCollide( this.player1, this.foods[i], 35 ) ){
+                    score1 += this.foods[i].getScore();
+                    this.removeChild( this.foods[i] );
                     this.scoreLabel1.setString( score1 );
                 }
                 
-                else if( this.checkCollide( this.player2, this.stars[i], 35 ) ){
-                    this.removeChild( this.stars[i] );
-                    score2++;
+                else if( this.checkCollide( this.player2, this.foods[i], 35 ) ){
+                    score2 += this.foods[i].getScore();
+                    this.removeChild( this.foods[i] );
                     this.scoreLabel2.setString( score2 );
                 }
                 
-                else if( starPos.y < 0 ){
-                    this.removeChild( this.stars[i] );
+                else if( foodPos.y < 0 ){
+                    this.removeChild( this.foods[i] );
                 }
             }
         }

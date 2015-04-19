@@ -1,11 +1,11 @@
-var Cream = Food.extend({
+var Unji = Food.extend({
    
     ctor: function(){
         this._super();
-        this.initWithFile( res.Cream_pic );
+        this.initWithFile( res.Unji_pic );
     },
     
     getScore: function(){
-        return 3;
+        return -5;
     }
 });
