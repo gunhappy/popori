@@ -15,6 +15,7 @@
         "src/GameLayer.js",
         "src/Background.js",
         "src/Player.js",
-        "src/Star.js"
+        "src/Food.js",
+        "src/Cream.js"
     ]
 }

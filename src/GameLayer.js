@@ -7,11 +7,22 @@ var GameLayer = cc.LayerColor.extend({
     init: function() {
         this._super( new cc.Color( 127, 127, 127, 255 ) );
         this.setPosition( new cc.Point( 0, 0 ) );
+        this.initBackground();
+        this.initPlayer();
+        this.addKeyboardHandlers();
+        this.initLabel();
+        this.scheduleUpdate();
         
+        return true;
+    },
+    
+    initBackground: function(){
         this.Background = new Background();
         this.Background.setPosition( new cc.Point( screenWidth/2 , screenHeight/2 ) );
         this.addChild( this.Background );
-        
+    },
+    
+    initPlayer: function(){
         this.player1 = new Player( Player.MOVE_DIR.Player1, res.Player1_pic );
         this.player1.setPosition( new cc.Point( 100,80 ) );
         this.addChild( this.player1 );
@@ -20,10 +31,11 @@ var GameLayer = cc.LayerColor.extend({
         this.player2.setPosition( new cc.Point( 400,80 ) );
         this.addChild( this.player2 ) ;
         
-        this.addKeyboardHandlers();
         this.player1.scheduleUpdate();
         this.player2.scheduleUpdate();
-        
+    },
+    
+    initLabel: function(){
         this.scoreLabel1 = cc.LabelTTF.create( '0','Arial',40 );
         this.scoreLabel1.setPosition( new cc.Point( 50,550 ) );
         this.addChild( this.scoreLabel1 );
@@ -41,10 +53,6 @@ var GameLayer = cc.LayerColor.extend({
         this.addChild( this.timeLable );
         this.timeLable.setString( time );
         this.timeLable.setColor( new cc.Color( 178, 0 ,25 ) );
-        
-        this.scheduleUpdate();
-        
-        return true;
     },
     
     update: function(dt){
@@ -71,13 +79,20 @@ var GameLayer = cc.LayerColor.extend({
     },
     
     randomSpawnStar: function(){
-        var randNum = Math.floor( Math.random() * 30 );
-        
-        if( randNum == 1 ){
-            var randX = Math.floor( Math.random() * screenWidth );
-            this.star = new Star();
+        var randNum = Math.floor( Math.random() * 50 );
+        var randPosX = Math.floor( Math.random() * screenWidth );
+
+        if( randNum == 1 ){            
+            this.star = new Cream();
             this.addChild( this.star );
-            this.star.setPosition( new cc.Point( randX,screenHeight ) );
+            this.star.setPosition( new cc.Point( randPosX,screenHeight ) );
+            this.star.scheduleUpdate();
+        }
+        
+        else if( randNum == 2 ){
+            this.star = new Cream();
+            this.addChild( this.star );
+            this.star.setPosition( new cc.Point( randPosX,screenHeight ) );
             this.star.scheduleUpdate();
         }
         
@@ -88,7 +103,7 @@ var GameLayer = cc.LayerColor.extend({
         this.stars = this.getChildren();
         
         for( var i=0 ; i < this.stars.length ; i++ ){
-            if( this.stars[i] instanceof Star ){
+            if( this.stars[i] instanceof Food ){
 	            var starPos = this.stars[i].getPosition();
                 
                 if( this.checkCollide( this.player1, this.stars[i], 35 ) ){
