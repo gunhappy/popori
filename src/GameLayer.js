@@ -57,6 +57,7 @@ var GameLayer = cc.LayerColor.extend({
     
     update: function(dt){
         this.randomSpawnFood();
+        this.randomSpawnItem();
         this.getScoreFood();
         this.checkPlayerCollide();
         this.countdown();
@@ -106,10 +107,10 @@ var GameLayer = cc.LayerColor.extend({
         else if( randNum == 17|| randNum == 18|| randNum == 19 ){
             this.food = new Donut();
         }
-        else if( randNum == 20|| randNum == 21 ){
+        else if( randNum == 20 ){
             this.food = new Hamburger();
         }
-        else if( randNum == 22|| randNum == 23 ){
+        else if( randNum == 22 ){
             this.food = new Macaroon();
         }
         else if( randNum == 24|| randNum == 25|| randNum == 26 ){
@@ -144,6 +145,41 @@ var GameLayer = cc.LayerColor.extend({
                     this.removeChild( this.foods[i] );
                 }
             }
+            
+            else if( this.foods[i] instanceof Item ){
+                var itemPos = this.foods[i].getPosition();
+                
+                if( this.checkCollide( this.player1, this.foods[i], 35 ) ){
+                    this.removeChild( this.foods[i] );
+                }
+                
+                else if( this.checkCollide( this.player2, this.foods[i], 35 ) ){
+                    this.removeChild( this.foods[i] );
+                }
+                
+                else if( itemPos.y < 0 ){
+                    this.removeChild( this.foods[i] );
+                }
+            }
+        }
+    },
+    
+    randomSpawnItem: function(){
+        var randNum = Math.floor( Math.random() * 2000 );
+        var randPosX = Math.floor( Math.random() * screenWidth );
+
+        if( randNum == 1 ){            
+            this.item = new Power();
+            this.addChild( this.item );
+            this.item.setPosition( new cc.Point( randPosX,screenHeight ) );
+            this.item.scheduleUpdate();
+        }
+        
+        else if( randNum == 2 ){            
+            this.item = new Shield();
+            this.addChild( this.item );
+            this.item.setPosition( new cc.Point( randPosX,screenHeight ) );
+            this.item.scheduleUpdate();
         }
     },
     
