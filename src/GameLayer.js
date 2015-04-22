@@ -130,15 +130,21 @@ var GameLayer = cc.LayerColor.extend({
 	            var foodPos = this.foods[i].getPosition();
                 
                 if( this.checkCollide( this.player1, this.foods[i], 35 ) ){
-                    score1 += this.foods[i].getScore();
-                    this.removeChild( this.foods[i] );
+                    if( score1 + this.foods[i].getScore() < 0){
+                        score1 = 0;
+                    }
+                    else{ score1 += this.foods[i].getScore(); }
                     this.scoreLabel1.setString( score1 );
+                    this.removeChild( this.foods[i] );
                 }
                 
                 else if( this.checkCollide( this.player2, this.foods[i], 35 ) ){
-                    score2 += this.foods[i].getScore();
-                    this.removeChild( this.foods[i] );
+                    if( score2 + this.foods[i].getScore() < 0){
+                        score2 = 0;
+                    }
+                    else{ score2 += this.foods[i].getScore(); }
                     this.scoreLabel2.setString( score2 );
+                    this.removeChild( this.foods[i] );
                 }
                 
                 else if( foodPos.y < 0 ){
@@ -150,10 +156,18 @@ var GameLayer = cc.LayerColor.extend({
                 var itemPos = this.foods[i].getPosition();
                 
                 if( this.checkCollide( this.player1, this.foods[i], 35 ) ){
+                    if( this.foods[i] instanceof Power ){
+                        this.foods[i].effect( this.player2 );
+                    }
+                    else { this.foods[i].effect( this.player1 ); }
                     this.removeChild( this.foods[i] );
                 }
                 
-                else if( this.checkCollide( this.player2, this.foods[i], 35 ) ){
+                else if( this.checkCollide( this.player2, this.foods[i], 35 ) ){4
+                    if( this.foods[i] instanceof Power ){
+                        this.foods[i].effect( this.player1 );
+                    }
+                    else { this.foods[i].effect( this.player2 ); }
                     this.removeChild( this.foods[i] );
                 }
                 
@@ -165,7 +179,7 @@ var GameLayer = cc.LayerColor.extend({
     },
     
     randomSpawnItem: function(){
-        var randNum = Math.floor( Math.random() * 2000 );
+        var randNum = Math.floor( Math.random() * 600 );
         var randPosX = Math.floor( Math.random() * screenWidth );
 
         if( randNum == 1 ){            

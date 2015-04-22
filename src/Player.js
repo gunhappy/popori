@@ -6,6 +6,8 @@ var Player = cc.Sprite.extend({
         this.moving = 0;
         this.keyboard = MOVE_DIR;
         this.vy = 0;
+        this.otherPower = 50;
+        this.shield = 0; 
         this.jump == false;
     },
     
@@ -52,12 +54,24 @@ var Player = cc.Sprite.extend({
     
     reboundLeft: function(){
         var pos = this.getPosition();
-        this.setPosition( cc.p( pos.x - 90 , pos.y ) );
+        var rebound = this.otherPower - this.shield;
+        this.setPosition( cc.p( pos.x - rebound , pos.y ) );
     },
     
     reboundRight: function(){
         var pos = this.getPosition();
-        this.setPosition( cc.p( pos.x + 90 , pos.y ) );
+        var rebound = this.otherPower - this.shield;
+        this.setPosition( cc.p( pos.x + rebound , pos.y ) );
+    },
+    
+    addPower: function(){
+        this.otherPower += 10;
+    },
+    
+    addShield: function(){
+        if( this.otherPower - this.shield >0 ){ 
+            this.shield += 10;
+        }
     }
 });
 

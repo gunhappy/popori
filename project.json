@@ -24,6 +24,9 @@
         "src/Macaroon.js",
         "src/Pizza.js",
         "src/Sandwich.js",
-        "src/Unji.js"
+        "src/Unji.js",
+        "src/Item.js",
+        "src/Power.js",
+        "src/Shield.js"
     ]
 }

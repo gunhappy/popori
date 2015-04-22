@@ -10,7 +10,9 @@ var res = {
     Macaroon_pic : "res/images/food/macaroon.png",
     Pizza_pic : "res/images/food/pizza.png",
     Sandwich_pic : "res/images/food/sandwich.png",
-    Unji_pic : "res/images/food/unji.png"
+    Unji_pic : "res/images/food/unji.png",
+    Power_pic : "res/images/item/power.png",
+    Shield_pic : "res/images/item/shield.png"
 };
 
 var g_resources = [];
