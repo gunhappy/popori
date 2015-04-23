@@ -76,7 +76,13 @@ var Player = cc.Sprite.extend({
     },
     
     speedUP: function(){
-        this.speed += 2;
+        this.speed += 1;
+    },
+    
+    speedDown: function(){
+        if( this.speed > -4 ){
+            this.speed -= 1;
+        }
     }
 });
 

@@ -133,6 +133,14 @@ var GameLayer = cc.LayerColor.extend({
             this.item.setPosition( new cc.Point( randPosX,screenHeight ) );
             this.item.scheduleUpdate();
         }
+        
+        else if( randNum == 4 ){
+            this.item = new Slow();
+            this.addChild( this.item );
+            this.item.setPosition( new cc.Point( randPosX,screenHeight ) );
+            this.item.scheduleUpdate();
+        }
+        
     },
     
     randFoodType: function(){
@@ -200,7 +208,7 @@ var GameLayer = cc.LayerColor.extend({
                 var itemPos = this.foods[i].getPosition();
                 
                 if( this.checkCollide( this.player1, this.foods[i], 35 ) ){
-                    if( this.foods[i] instanceof Power ){
+                    if( this.foods[i] instanceof Power || this.foods[i] instanceof Slow ){
                         this.foods[i].effect( this.player2 );
                     }
                     else { this.foods[i].effect( this.player1 ); }
@@ -208,7 +216,7 @@ var GameLayer = cc.LayerColor.extend({
                 }
                 
                 else if( this.checkCollide( this.player2, this.foods[i], 35 ) ){4
-                    if( this.foods[i] instanceof Power ){
+                    if( this.foods[i] instanceof Power || this.foods[i] instanceof Slow ){
                         this.foods[i].effect( this.player1 );
                     }
                     else { this.foods[i].effect( this.player2 ); }

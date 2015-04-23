@@ -13,7 +13,8 @@ var res = {
     Unji_pic : "res/images/food/unji.png",
     Power_pic : "res/images/item/power.png",
     Shield_pic : "res/images/item/shield.png",
-    Speed_pic : "res/images/item/speed.png"
+    Speed_pic : "res/images/item/speed.png",
+    Slow_pic : "res/images/item/slow.png"
 };
 
 var g_resources = [];

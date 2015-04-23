@@ -28,6 +28,7 @@
         "src/Item.js",
         "src/Power.js",
         "src/Shield.js",
-        "src/Speed.js"
+        "src/Speed.js",
+        "src/Slow.js"
     ]
 }
