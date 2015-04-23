@@ -27,6 +27,7 @@
         "src/Unji.js",
         "src/Item.js",
         "src/Power.js",
-        "src/Shield.js"
+        "src/Shield.js",
+        "src/Speed.js"
     ]
 }

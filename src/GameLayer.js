@@ -1,7 +1,3 @@
-var score1 =0;
-var score2 =0;
-var time = 120;
-
 var GameLayer = cc.LayerColor.extend({
     
     init: function() {
@@ -12,6 +8,18 @@ var GameLayer = cc.LayerColor.extend({
         this.addKeyboardHandlers();
         this.initLabel();
         this.scheduleUpdate();
+             if(cc.sys.capabilities.hasOwnProperty('mouse') ) {
+      cc.eventManager.addListener({
+        event: cc.EventListener.MOUSE,
+        onMouseDown: function(event){
+          if(event.getButton() == cc.EventMouse.BUTTON_LEFT){
+            cc.log(event.getLocationX()+","+event.getLocationY());
+          }
+        }
+      },this);
+    }
+        
+        
         
         return true;
     },
@@ -36,22 +44,25 @@ var GameLayer = cc.LayerColor.extend({
     },
     
     initLabel: function(){
+        this.score1 =0;
+        this.score2 =0;
+        this.time = 120;
         this.scoreLabel1 = cc.LabelTTF.create( '0','Arial',40 );
         this.scoreLabel1.setPosition( new cc.Point( 50,550 ) );
         this.addChild( this.scoreLabel1 );
-        this.scoreLabel1.setString( score1 );
+        this.scoreLabel1.setString( this.score1 );
         this.scoreLabel1.setColor( new cc.Color( 255, 192 ,203 ) );
         
         this.scoreLabel2 = cc.LabelTTF.create( '0','Arial',40 );
         this.scoreLabel2.setPosition( new cc.Point( 50,500 ) );
         this.addChild( this.scoreLabel2 );
-        this.scoreLabel2.setString( score2 );
+        this.scoreLabel2.setString( this.score2 );
         this.scoreLabel2.setColor( new cc.Color( 0,0,255 ) );
            
         this.timeLable = cc.LabelTTF.create( '0','Arial',40 );
         this.timeLable.setPosition( new cc.Point( screenWidth/2 ,550 ) );
         this.addChild( this.timeLable );
-        this.timeLable.setString( time );
+        this.timeLable.setString( this.time );
         this.timeLable.setColor( new cc.Color( 178, 0 ,25 ) );
     },
     
@@ -71,12 +82,19 @@ var GameLayer = cc.LayerColor.extend({
             onKeyPressed: function( keyCode, event ){
                 Player.MOVE_DIR[ keyCode ] = true;
                 Player.MOVE_DIR[ keyCode ] = true;
+                self.onkeydown( keyCode );
             },
             onKeyReleased: function( keyCode, event ){
                 Player.MOVE_DIR[ keyCode ] = false;
                 Player.MOVE_DIR[ keyCode ] = false;
             }
         }, this);
+    },
+    
+    onkeydown: function( keyCode ){
+        if( keyCode == 82 ){
+            cc.director.runScene(new StartScene());
+        }
     },
     
     randomSpawnFood: function(){
@@ -88,6 +106,32 @@ var GameLayer = cc.LayerColor.extend({
             this.addChild( this.food );
             this.food.setPosition( new cc.Point( randPosX,screenHeight ) );
             this.food.scheduleUpdate();
+        }
+    },
+    
+    randomSpawnItem: function(){
+        var randNum = Math.floor( Math.random() * 600 );
+        var randPosX = Math.floor( Math.random() * screenWidth );
+
+        if( randNum == 1 ){            
+            this.item = new Power();
+            this.addChild( this.item );
+            this.item.setPosition( new cc.Point( randPosX,screenHeight ) );
+            this.item.scheduleUpdate();
+        }
+        
+        else if( randNum == 2){            
+            this.item = new Shield();
+            this.addChild( this.item );
+            this.item.setPosition( new cc.Point( randPosX,screenHeight ) );
+            this.item.scheduleUpdate();
+        }
+        
+        else if( randNum == 3 ){
+            this.item = new Speed();
+            this.addChild( this.item );
+            this.item.setPosition( new cc.Point( randPosX,screenHeight ) );
+            this.item.scheduleUpdate();
         }
     },
     
@@ -130,20 +174,20 @@ var GameLayer = cc.LayerColor.extend({
 	            var foodPos = this.foods[i].getPosition();
                 
                 if( this.checkCollide( this.player1, this.foods[i], 35 ) ){
-                    if( score1 + this.foods[i].getScore() < 0){
-                        score1 = 0;
+                    if( this.score1 + this.foods[i].getScore() < 0){
+                        this.score1 = 0;
                     }
-                    else{ score1 += this.foods[i].getScore(); }
-                    this.scoreLabel1.setString( score1 );
+                    else{ this.score1 += this.foods[i].getScore(); }
+                    this.scoreLabel1.setString( this.score1 );
                     this.removeChild( this.foods[i] );
                 }
                 
                 else if( this.checkCollide( this.player2, this.foods[i], 35 ) ){
-                    if( score2 + this.foods[i].getScore() < 0){
-                        score2 = 0;
+                    if( this.score2 + this.foods[i].getScore() < 0){
+                        this.score2 = 0;
                     }
-                    else{ score2 += this.foods[i].getScore(); }
-                    this.scoreLabel2.setString( score2 );
+                    else{ this.score2 += this.foods[i].getScore(); }
+                    this.scoreLabel2.setString( this.score2 );
                     this.removeChild( this.foods[i] );
                 }
                 
@@ -178,25 +222,6 @@ var GameLayer = cc.LayerColor.extend({
         }
     },
     
-    randomSpawnItem: function(){
-        var randNum = Math.floor( Math.random() * 600 );
-        var randPosX = Math.floor( Math.random() * screenWidth );
-
-        if( randNum == 1 ){            
-            this.item = new Power();
-            this.addChild( this.item );
-            this.item.setPosition( new cc.Point( randPosX,screenHeight ) );
-            this.item.scheduleUpdate();
-        }
-        
-        else if( randNum == 2 ){            
-            this.item = new Shield();
-            this.addChild( this.item );
-            this.item.setPosition( new cc.Point( randPosX,screenHeight ) );
-            this.item.scheduleUpdate();
-        }
-    },
-    
     checkCollide: function( object1 ,object2, scope ){
         var Object1Pos = object1.getPosition();
         var Object2Pos = object2.getPosition();
@@ -217,18 +242,24 @@ var GameLayer = cc.LayerColor.extend({
     },
     
     countdown: function(){
-        if( time > 0 ){
+        if( this.time > 0 ){
             this.schedule( this.counter,1,0 );
         }
-        
-        else if( time == 0 ){
+        else if( this.time == 0 ){
             this.unscheduleUpdate();
+            /*
+            var drawer = cc.DrawNode.create();
+            this.addChild( drawer );
+            if( this.score1 > this.score2 ){
+                drawer.drawRect( cc.p( 200, 200 ), cc.p( 620, 435 ), new cc.Color( 255, 192 ,203 ), 5, new cc.Color( 0,0,255  ) );
+            }
+            else{ drawer.drawRect( cc.p( 200, 200 ), cc.p( 620, 435 ), new cc.Color( 0,0,255 ), 5, new cc.Color( 255, 192 ,203  ) ); }*/
         }
     },
     
     counter: function(dt){
-        time--;
-        this.timeLable.setString( time );
+        this.time--;
+        this.timeLable.setString( this.time );
     }
 });
  

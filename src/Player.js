@@ -7,7 +7,8 @@ var Player = cc.Sprite.extend({
         this.keyboard = MOVE_DIR;
         this.vy = 0;
         this.otherPower = 50;
-        this.shield = 0; 
+        this.shield = 0;
+        this.speed = 0;
         this.jump == false;
     },
     
@@ -20,11 +21,11 @@ var Player = cc.Sprite.extend({
         var pos = this.getPosition();
         
         if( Player.MOVE_DIR[ this.keyboard[0] ] && pos.x > 0 ) {
-            pos.x -= 10;
+            pos.x -= (10+this.speed);
         }
         
         if( Player.MOVE_DIR[  this.keyboard[1] ] && pos.x < screenWidth ) {
-            pos.x += 10;
+            pos.x += (10+this.speed);
         }
         
         this.setPosition( cc.p ( pos.x, pos.y ) );
@@ -72,6 +73,10 @@ var Player = cc.Sprite.extend({
         if( this.otherPower - this.shield >0 ){ 
             this.shield += 10;
         }
+    },
+    
+    speedUP: function(){
+        this.speed += 2;
     }
 });
 

@@ -12,7 +12,8 @@ var res = {
     Sandwich_pic : "res/images/food/sandwich.png",
     Unji_pic : "res/images/food/unji.png",
     Power_pic : "res/images/item/power.png",
-    Shield_pic : "res/images/item/shield.png"
+    Shield_pic : "res/images/item/shield.png",
+    Speed_pic : "res/images/item/speed.png"
 };
 
 var g_resources = [];
