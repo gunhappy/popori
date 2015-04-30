@@ -4,22 +4,7 @@ var MainMenu = cc.LayerColor.extend({
         this._super( new cc.Color( 127, 127, 127, 255 ) );
         this.setPosition( new cc.Point( 0, 0 ) );
         this.initBackground();
-        
-        this.title = cc.Sprite.create( res.TitleText );
-        this.title.setPosition( screenWidth/2 , screenHeight-100 );
-        this.addChild( this.title );
-        
-        this.playButton =  new cc.MenuItemImage(
-            res.Play1Text,
-            res.Play2Text,
-            function () {
-    			cc.director.runScene(new StartScene() );
-    		}, this);
-        this.playButton = new cc.Menu(this.playButton);
-    	this.addChild(this.playButton);
-        this.playButton.setPosition( screenWidth/2 , screenHeight-250 );
-        
-        this.addKeyboardHandlers();
+        this.initButton();
         return true;
     },
     
@@ -29,23 +14,32 @@ var MainMenu = cc.LayerColor.extend({
         this.addChild( this.MenuBackground );
     },
     
-    addKeyboardHandlers: function(){
-        var self = this;
+    initButton: function(){
+        this.title = cc.Sprite.create( res.TitleText );
+        this.title.setPosition( screenWidth/2 , screenHeight-100 );
+        this.addChild( this.title );
         
-        cc.eventManager.addListener({
-            event: cc.EventListener.KEYBOARD,
-            onKeyPressed: function( keyCode, event ){
-                self.onkeydown( keyCode );
-            },
-            onKeyReleased: function( keyCode, event ){}
-        }, this);
+        this.singleButton =  new cc.MenuItemImage(
+            res.SingleText1,
+            res.SingleText2,
+            function () {
+    			cc.director.runScene(new SingleScene() );
+    		}, this);
+        this.singleButton = new cc.Menu(this.singleButton);
+    	this.addChild(this.singleButton);
+        this.singleButton.setPosition( screenWidth/2 , screenHeight-250 );
+        
+        this.multiButton =  new cc.MenuItemImage(
+            res.MultiText1,
+            res.MultiText2,
+            function () {
+    			cc.director.runScene(new StartScene() );
+    		}, this);
+        this.multiButton = new cc.Menu(this.multiButton);
+    	this.addChild(this.multiButton);
+        this.multiButton.setPosition( screenWidth/2 , screenHeight-450 );
     },
     
-    onkeydown: function( keyCode ){
-        if( keyCode == 13 ){
-            cc.director.runScene(new StartScene());
-        }
-    }
 });
     
 

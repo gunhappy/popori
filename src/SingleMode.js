@@ -1,4 +1,4 @@
-var GameLayer = cc.LayerColor.extend({
+var SingleMode = cc.LayerColor.extend({
     
     init: function() {
         this._super( new cc.Color( 127, 127, 127, 255 ) );
@@ -9,6 +9,7 @@ var GameLayer = cc.LayerColor.extend({
         this.initLabel();
         this.scheduleUpdate();
         this.start = false;
+        this.time = 0;
         return true;
     },
     
@@ -19,64 +20,58 @@ var GameLayer = cc.LayerColor.extend({
     },
     
     initPlayer: function(){
-        this.player1 = new Player( Player.MOVE_DIR.Player1, res.Player1_pic );
-        this.player1.setPosition( new cc.Point( 740,80 ) );
+        this.player1 = new Player( Player.MOVE_DIR.Player1, res.Player2_pic );
+        this.player1.setPosition( new cc.Point( screenWidth/2 ,80 ) );
         this.addChild( this.player1 );
         
-        this.player2 = new Player( Player.MOVE_DIR.Player2, res.Player2_pic );
-        this.player2.setPosition( new cc.Point( 50,80 ) );
-        this.addChild( this.player2 ) ;
-        
         this.player1.scheduleUpdate();
-        this.player2.scheduleUpdate();
     },
     
     initLabel: function(){
-        this.score1 =0;
-        this.score2 =0;
-        this.time = 120;
+        this.score = 0;
+        this.life = 5;
         
-        this.scoreLabel1 = cc.LabelTTF.create( '0','Cooper Black',40 );
-        this.scoreLabel1.setPosition( new cc.Point( 700,500 ) );
-        this.addChild( this.scoreLabel1 );
-        this.scoreLabel1.setString( this.score1 );
-        this.scoreLabel1.setColor( new cc.Color( 0,0,255 ) );
+        this.scoreLabel = cc.LabelTTF.create( '0','Cooper Black',40 );
+        this.scoreLabel.setPosition( new cc.Point( 140,500 ) );
+        this.addChild( this.scoreLabel );
+        this.scoreLabel.setString( this.score );
+        this.scoreLabel.setColor( new cc.Color( 255, 192 ,203 ) );
         
-        this.textLabel1 = cc.LabelTTF.create( '0','Cooper Black',30 );
-        this.textLabel1.setPosition( new cc.Point( 670,550 ) );
-        this.addChild( this.textLabel1 );
-        this.textLabel1.setString( "Player 2" );
-        this.textLabel1.setColor( new cc.Color( 0,0,255 ) );
-        
-        this.scoreLabel2 = cc.LabelTTF.create( '0','Cooper Black',40 );
-        this.scoreLabel2.setPosition( new cc.Point( 140,500 ) );
-        this.addChild( this.scoreLabel2 );
-        this.scoreLabel2.setString( this.score2 );
-        this.scoreLabel2.setColor( new cc.Color( 255, 192 ,203 ) );
-        
-        this.textLabel2 = cc.LabelTTF.create( '0','Cooper Black',30 );
-        this.textLabel2.setPosition( new cc.Point( 100,550 ) );
-        this.addChild( this.textLabel2 );
-        this.textLabel2.setString( "Player 1" );
-        this.textLabel2.setColor( new cc.Color( 255, 192 ,203 ) );
-        
-        this.textLabel3 = cc.LabelTTF.create( '0','Cooper Black',30 );
-        this.textLabel3.setPosition( new cc.Point( screenWidth/2,550 ) );
-        this.addChild( this.textLabel3 );
-        this.textLabel3.setString( "Time left" );
-        this.textLabel3.setColor( new cc.Color( 178, 0 ,25 ) );
-           
-        this.timeLabel = cc.LabelTTF.create( '0','Cooper Black',40 );
-        this.timeLabel.setPosition( new cc.Point( screenWidth/2 ,500 ) );
-        this.addChild( this.timeLabel );
-        this.timeLabel.setString( this.time );
-        this.timeLabel.setColor( new cc.Color( 178, 0 ,25 ) );
+        this.textLabel = cc.LabelTTF.create( '0','Cooper Black',30 );
+        this.textLabel.setPosition( new cc.Point( 100,550 ) );
+        this.addChild( this.textLabel );
+        this.textLabel.setString( "Score" );
+        this.textLabel.setColor( new cc.Color( 255, 192 ,203 ) );
         
         this.startLabel = cc.LabelTTF.create( '0','Cooper Black',40 );
         this.startLabel.setPosition( new cc.Point( screenWidth/2 ,screenHeight/2 ) );
         this.addChild( this.startLabel );
         this.startLabel.setString( "< PRESS SPACEBAR TO START >" );
         this.startLabel.setColor( new cc.Color( 0, 0 ,0 ) );
+        
+        this.lifetext = cc.LabelTTF.create( '0','Cooper Black',30 );
+        this.lifetext.setPosition( new cc.Point( screenWidth/2,550 ) );
+        this.addChild( this.lifetext );
+        this.lifetext.setString( "Life left" );
+        this.lifetext.setColor( new cc.Color( 178, 0 ,25 ) );
+        
+        this.lifeLabel = cc.LabelTTF.create( '0','Cooper Black',40 );
+        this.lifeLabel.setPosition( new cc.Point( screenWidth/2 ,500 ) );
+        this.addChild( this.lifeLabel );
+        this.lifeLabel.setString( this.life );
+        this.lifeLabel.setColor( new cc.Color( 178, 0 ,25 ) );
+        
+        this.highscoreLabel = cc.LabelTTF.create( '0','Cooper Black',40 );
+        this.highscoreLabel.setPosition( new cc.Point( 700,500 ) );
+        this.addChild( this.highscoreLabel );
+        this.highscoreLabel.setString( highscore );
+        this.highscoreLabel.setColor( new cc.Color( 0,0,255 ) );
+        
+        this.textLabel2 = cc.LabelTTF.create( '0','Cooper Black',30 );
+        this.textLabel2.setPosition( new cc.Point( 670,550 ) );
+        this.addChild( this.textLabel2 );
+        this.textLabel2.setString( "High Score" );
+        this.textLabel2.setColor( new cc.Color( 0,0,255 ) );
         
         this.howToButton =  new cc.MenuItemImage(
             res.HowTo1Text,
@@ -95,8 +90,16 @@ var GameLayer = cc.LayerColor.extend({
             this.randomSpawnItem();
             this.addArrow();
             this.getScoreFood();
-            this.checkPlayerCollide();
-            this.countdown();
+            this.updateHighScore();
+            this.schedule( this.counter,1,0 );
+            this.isDead();
+        }
+    },
+    
+    updateHighScore: function(){
+        if( this.score >= highscore ){
+            highscore = this.score;
+            this.highscoreLabel.setString( highscore );
         }
     },
     
@@ -141,18 +144,11 @@ var GameLayer = cc.LayerColor.extend({
     },
     
     randomSpawnItem: function(){
-        var randNum = Math.floor( Math.random() * 600 );
+        var randNum = Math.floor( Math.random() * 2000 );
         var randPosX = Math.floor( Math.random() * screenWidth );
 
         if( randNum == 1 ){            
-            this.item = new Power();
-            this.addChild( this.item );
-            this.item.setPosition( new cc.Point( randPosX,screenHeight ) );
-            this.item.scheduleUpdate();
-        }
-        
-        else if( randNum == 2){            
-            this.item = new Shield();
+            this.item = new Life();
             this.addChild( this.item );
             this.item.setPosition( new cc.Point( randPosX,screenHeight ) );
             this.item.scheduleUpdate();
@@ -213,20 +209,11 @@ var GameLayer = cc.LayerColor.extend({
 	            var foodPos = this.foods[i].getPosition();
                 
                 if( this.checkCollide( this.player1, this.foods[i], 35 ) ){
-                    if( this.score1 + this.foods[i].getScore() < 0){
-                        this.score1 = 0;
+                    if( this.score + this.foods[i].getScore() < 0){
+                        this.score = 0;
                     }
-                    else{ this.score1 += this.foods[i].getScore(); }
-                    this.scoreLabel1.setString( this.score1 );
-                    this.removeChild( this.foods[i] );
-                }
-                
-                else if( this.checkCollide( this.player2, this.foods[i], 35 ) ){
-                    if( this.score2 + this.foods[i].getScore() < 0){
-                        this.score2 = 0;
-                    }
-                    else{ this.score2 += this.foods[i].getScore(); }
-                    this.scoreLabel2.setString( this.score2 );
+                    else{ this.score += this.foods[i].getScore(); }
+                    this.scoreLabel.setString( this.score );
                     this.removeChild( this.foods[i] );
                 }
                 
@@ -239,18 +226,11 @@ var GameLayer = cc.LayerColor.extend({
                 var itemPos = this.foods[i].getPosition();
                 
                 if( this.checkCollide( this.player1, this.foods[i], 35 ) ){
-                    if( this.foods[i] instanceof Power || this.foods[i] instanceof Slow ){
-                        this.foods[i].effect( this.player2 );
+                    if( this.foods[i] instanceof Life ){
+                        this.life += 1;
+                        this.lifeLabel.setString( this.life );
                     }
                     else { this.foods[i].effect( this.player1 ); }
-                    this.removeChild( this.foods[i] );
-                }
-                
-                else if( this.checkCollide( this.player2, this.foods[i], 35 ) ){
-                    if( this.foods[i] instanceof Power || this.foods[i] instanceof Slow ){
-                        this.foods[i].effect( this.player1 );
-                    }
-                    else { this.foods[i].effect( this.player2 ); }
                     this.removeChild( this.foods[i] );
                 }
                 
@@ -263,20 +243,11 @@ var GameLayer = cc.LayerColor.extend({
                 var arrowPos = this.foods[i].getPosition();
                 
                 if( this.checkCollide( this.player1, this.foods[i], 35 ) ){
-                    if( this.score1 - 10 < 0){
-                        this.score1 = 0;
+                    if( this.life - 1 < 0){
+                        this.life = 0;
                     }
-                    else { this.score1 -= 10; }
-                    this.scoreLabel1.setString( this.score1 );
-                    this.removeChild( this.foods[i] );
-                }
-                
-                else if( this.checkCollide( this.player2, this.foods[i], 35 ) ){
-                    if( this.score2 - 10 < 0){
-                        this.score2 = 0;
-                    }
-                    else { this.score2 -= 10; }
-                    this.scoreLabel2.setString( this.score2 );
+                    else { this.life -= 1; }
+                    this.lifeLabel.setString( this.life );
                     this.removeChild( this.foods[i] );
                 }
                 
@@ -293,21 +264,14 @@ var GameLayer = cc.LayerColor.extend({
         return ( Math.abs( Object1Pos.x - Object2Pos.x ) <= scope ) && ( Math.abs( Object1Pos.y - Object2Pos.y ) <= scope );
     },
     
-    checkPlayerCollide: function(){
-        if( this.checkCollide( this.player1, this.player2, 55 )){
-            if( this.player1.getPositionX() < this.player2.getPositionX() ){
-                this.player1.reboundLeft();
-                this.player2.reboundRight();    
-            }
-            else {
-                this.player2.reboundLeft();
-                this.player1.reboundRight();
-             }
-        }
-    },
-    
     addArrow: function(){
-        var randNum = Math.floor( Math.random() * 1000 );
+        var rateRandom = 3000 - ( this.time*20 ) ;
+        
+        if( rateRandom < 200 ){
+            rateRandom = 200;
+        }
+        console.log( rateRandom );
+        var randNum = Math.floor( Math.random() * rateRandom );
         if( randNum == 1 ){
             this.arrow = new ArrowRight();
             this.addChild( this.arrow );
@@ -320,7 +284,7 @@ var GameLayer = cc.LayerColor.extend({
             this.arrow.setPosition( new cc.Point( 800,80 ) );
             this.arrow.scheduleUpdate();
         }
-        else if( randNum == 3 || randNum == 4 || randNum == 5 || randNum == 6 || randNum == 7 ){
+        else if( randNum == 3 || randNum == 4 || randNum == 5 || randNum == 6 || randNum == 7 || randNum == 8 ){
             this.arrow = new ArrowDown();
             this.addChild( this.arrow );
             this.arrow.setPosition( new cc.Point( Math.floor( Math.random() * screenWidth ) , screenHeight ) );
@@ -328,32 +292,23 @@ var GameLayer = cc.LayerColor.extend({
         }
     },
     
-    countdown: function(){
-        if( this.time > 0 ){
-            this.schedule( this.counter,1,0 );
-        }
-        else if( this.time == 0 ){
+    isDead: function(){
+        if( this.life == 0 ){
+            this.start = false;
             this.unscheduleUpdate();
-            
-            var drawer = cc.DrawNode.create();
-            this.addChild( drawer );
-            if( this.score1 > this.score2 ){
-                drawer.drawRect( cc.p( 200, 200 ), cc.p( 620, 435 ), new cc.Color( 255, 192 ,203 ), 5, new cc.Color( 0,0,255  ) );
-            }
-            else{ drawer.drawRect( cc.p( 200, 200 ), cc.p( 620, 435 ), new cc.Color( 0,0,255 ), 5, new cc.Color( 255, 192 ,203  ) ); }
         }
     },
     
     counter: function(dt){
-        this.time--;
-        this.timeLabel.setString( this.time );
+        this.time++;
     }
+    
 });
  
-var StartScene = cc.Scene.extend({
+var SingleScene = cc.Scene.extend({
     onEnter: function() {
         this._super();
-        var layer = new GameLayer();
+        var layer = new SingleMode();
         layer.init();
         this.addChild( layer );
     }
