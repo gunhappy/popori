@@ -21,8 +21,9 @@ var res = {
     Shield_pic : "res/images/item/shield.png",
     Speed_pic : "res/images/item/speed.png",
     Slow_pic : "res/images/item/slow.png",
-    ArrowLeft_pic : "res/images/item/arrowleft.png",
-    ArrowRight_pic : "res/images/item/arrowright.png"
+    ArrowLeft_pic : "res/images/arrowleft.png",
+    ArrowRight_pic : "res/images/arrowright.png",
+    ArrowDown_pic : "res/images/arrowdown.png"
 };
 
 var g_resources = [];

@@ -106,6 +106,7 @@ var GameLayer = cc.LayerColor.extend({
         if( this.start == true ){
             this.randomSpawnFood();
             this.randomSpawnItem();
+            this.addArrow();
             this.getScoreFood();
             this.checkPlayerCollide();
             this.countdown();
@@ -270,6 +271,32 @@ var GameLayer = cc.LayerColor.extend({
                     this.removeChild( this.foods[i] );
                 }
             }
+            
+            else if( this.foods[i] instanceof Arrow ){
+                var arrowPos = this.foods[i].getPosition();
+                
+                if( this.checkCollide( this.player1, this.foods[i], 35 ) ){
+                    if( this.score1 - 10 < 0){
+                        this.score1 = 0;
+                    }
+                    else { this.score1 -= 10; }
+                    this.scoreLabel1.setString( this.score1 );
+                    this.removeChild( this.foods[i] );
+                }
+                
+                else if( this.checkCollide( this.player2, this.foods[i], 35 ) ){
+                    if( this.score2 - 10 < 0){
+                        this.score2 = 0;
+                    }
+                    else { this.score2 -= 10; }
+                    this.scoreLabel2.setString( this.score2 );
+                    this.removeChild( this.foods[i] );
+                }
+                
+                else if( arrowPos.x < 0 || arrowPos.x > 800 ){
+                    this.removeChild( this.foods[i] );
+                }
+            }
         }
     },
     
@@ -289,6 +316,28 @@ var GameLayer = cc.LayerColor.extend({
                 this.player2.reboundLeft();
                 this.player1.reboundRight();
              }
+        }
+    },
+    
+    addArrow: function(){
+        var randNum = Math.floor( Math.random() * 1000 );
+        if( randNum == 1 ){
+            this.arrow = new ArrowRight();
+            this.addChild( this.arrow );
+            this.arrow.setPosition( new cc.Point( 0,80 ) );
+            this.arrow.scheduleUpdate();
+        }
+        else if( randNum == 2 ){
+            this.arrow = new ArrowLeft();
+            this.addChild( this.arrow );
+            this.arrow.setPosition( new cc.Point( 800,80 ) );
+            this.arrow.scheduleUpdate();
+        }
+        else if( randNum == 3 || randNum == 4 || randNum == 5 || randNum == 6 || randNum == 7 ){
+            this.arrow = new ArrowDown();
+            this.addChild( this.arrow );
+            this.arrow.setPosition( new cc.Point( Math.floor( Math.random() * screenWidth ) , screenHeight ) );
+            this.arrow.scheduleUpdate();
         }
     },
     

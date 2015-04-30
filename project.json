@@ -17,6 +17,10 @@
         "src/GameLayer.js",
         "src/Background.js",
         "src/Player.js",
+        "src/Arrow.js",
+        "src/ArrowRight.js",
+        "src/ArrowLeft.js",
+        "src/ArrowDown.js",
         "src/Food.js",
         "src/Cream.js",
         "src/Croissant.js",
@@ -31,8 +35,6 @@
         "src/Power.js",
         "src/Shield.js",
         "src/Speed.js",
-        "src/Slow.js",
-        "src/ArrowRight",
-        "src/ArrowLeft"
+        "src/Slow.js"
     ]
 }
