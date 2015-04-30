@@ -12,6 +12,8 @@
 
     "jsList" : [
         "src/resource.js",
+        "src/MainMenu.js",
+        "src/MenuBackground.js",
         "src/GameLayer.js",
         "src/Background.js",
         "src/Player.js",
@@ -29,6 +31,8 @@
         "src/Power.js",
         "src/Shield.js",
         "src/Speed.js",
-        "src/Slow.js"
+        "src/Slow.js",
+        "src/ArrowRight",
+        "src/ArrowLeft"
     ]
 }

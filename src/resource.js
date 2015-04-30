@@ -1,5 +1,11 @@
 var res = {
+    MenuBackground : "res/images/menu.jpg",
     Background_png : "res/images/background.png",
+    TitleText : "res/images/popori.png",
+    Play1Text : "res/images/play1.png",
+    Play2Text : "res/images/play2.png",
+    HowTo1Text : "res/images/howTo1.png",
+    HowTo2Text : "res/images/howTo2.png",
     Player1_pic : "res/images/player1.png",
     Player2_pic : "res/images/player2.png",
     Cream_pic : "res/images/food/cream.png",
@@ -14,7 +20,9 @@ var res = {
     Power_pic : "res/images/item/power.png",
     Shield_pic : "res/images/item/shield.png",
     Speed_pic : "res/images/item/speed.png",
-    Slow_pic : "res/images/item/slow.png"
+    Slow_pic : "res/images/item/slow.png",
+    ArrowLeft_pic : "res/images/item/arrowleft.png",
+    ArrowRight_pic : "res/images/item/arrowright.png"
 };
 
 var g_resources = [];

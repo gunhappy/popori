@@ -8,6 +8,7 @@ var GameLayer = cc.LayerColor.extend({
         this.addKeyboardHandlers();
         this.initLabel();
         this.scheduleUpdate();
+        this.start = false;
              if(cc.sys.capabilities.hasOwnProperty('mouse') ) {
       cc.eventManager.addListener({
         event: cc.EventListener.MOUSE,
@@ -32,11 +33,11 @@ var GameLayer = cc.LayerColor.extend({
     
     initPlayer: function(){
         this.player1 = new Player( Player.MOVE_DIR.Player1, res.Player1_pic );
-        this.player1.setPosition( new cc.Point( 100,80 ) );
+        this.player1.setPosition( new cc.Point( 740,80 ) );
         this.addChild( this.player1 );
         
         this.player2 = new Player( Player.MOVE_DIR.Player2, res.Player2_pic );
-        this.player2.setPosition( new cc.Point( 400,80 ) );
+        this.player2.setPosition( new cc.Point( 50,80 ) );
         this.addChild( this.player2 ) ;
         
         this.player1.scheduleUpdate();
@@ -47,31 +48,68 @@ var GameLayer = cc.LayerColor.extend({
         this.score1 =0;
         this.score2 =0;
         this.time = 120;
-        this.scoreLabel1 = cc.LabelTTF.create( '0','Arial',40 );
-        this.scoreLabel1.setPosition( new cc.Point( 50,550 ) );
+        
+        this.scoreLabel1 = cc.LabelTTF.create( '0','Cooper Black',40 );
+        this.scoreLabel1.setPosition( new cc.Point( 700,500 ) );
         this.addChild( this.scoreLabel1 );
         this.scoreLabel1.setString( this.score1 );
-        this.scoreLabel1.setColor( new cc.Color( 255, 192 ,203 ) );
+        this.scoreLabel1.setColor( new cc.Color( 0,0,255 ) );
         
-        this.scoreLabel2 = cc.LabelTTF.create( '0','Arial',40 );
-        this.scoreLabel2.setPosition( new cc.Point( 50,500 ) );
+        this.textLabel1 = cc.LabelTTF.create( '0','Cooper Black',30 );
+        this.textLabel1.setPosition( new cc.Point( 670,550 ) );
+        this.addChild( this.textLabel1 );
+        this.textLabel1.setString( "Player 2" );
+        this.textLabel1.setColor( new cc.Color( 0,0,255 ) );
+        
+        this.scoreLabel2 = cc.LabelTTF.create( '0','Cooper Black',40 );
+        this.scoreLabel2.setPosition( new cc.Point( 140,500 ) );
         this.addChild( this.scoreLabel2 );
         this.scoreLabel2.setString( this.score2 );
-        this.scoreLabel2.setColor( new cc.Color( 0,0,255 ) );
+        this.scoreLabel2.setColor( new cc.Color( 255, 192 ,203 ) );
+        
+        this.textLabel2 = cc.LabelTTF.create( '0','Cooper Black',30 );
+        this.textLabel2.setPosition( new cc.Point( 100,550 ) );
+        this.addChild( this.textLabel2 );
+        this.textLabel2.setString( "Player 1" );
+        this.textLabel2.setColor( new cc.Color( 255, 192 ,203 ) );
+        
+        this.textLabel3 = cc.LabelTTF.create( '0','Cooper Black',30 );
+        this.textLabel3.setPosition( new cc.Point( screenWidth/2,550 ) );
+        this.addChild( this.textLabel3 );
+        this.textLabel3.setString( "Time left" );
+        this.textLabel3.setColor( new cc.Color( 178, 0 ,25 ) );
            
-        this.timeLable = cc.LabelTTF.create( '0','Arial',40 );
-        this.timeLable.setPosition( new cc.Point( screenWidth/2 ,550 ) );
+        this.timeLable = cc.LabelTTF.create( '0','Cooper Black',40 );
+        this.timeLable.setPosition( new cc.Point( screenWidth/2 ,500 ) );
         this.addChild( this.timeLable );
         this.timeLable.setString( this.time );
         this.timeLable.setColor( new cc.Color( 178, 0 ,25 ) );
+        
+        this.startLable = cc.LabelTTF.create( '0','Cooper Black',40 );
+        this.startLable.setPosition( new cc.Point( screenWidth/2 ,screenHeight/2 ) );
+        this.addChild( this.startLable );
+        this.startLable.setString( "< PRESS SPACEBAR TO START >" );
+        this.startLable.setColor( new cc.Color( 0, 0 ,0 ) );
+        
+        this.howToButton =  new cc.MenuItemImage(
+            res.HowTo1Text,
+            res.HowTo2Text,
+            function () {
+    			cc.director.runScene(new MenuScene() );
+    		}, this);
+        this.howToButton = new cc.Menu(this.howToButton);
+    	this.addChild(this.howToButton);
+        this.howToButton.setPosition( screenWidth/2 , screenHeight-200 );
     },
     
     update: function(dt){
-        this.randomSpawnFood();
-        this.randomSpawnItem();
-        this.getScoreFood();
-        this.checkPlayerCollide();
-        this.countdown();
+        if( this.start == true ){
+            this.randomSpawnFood();
+            this.randomSpawnItem();
+            this.getScoreFood();
+            this.checkPlayerCollide();
+            this.countdown();
+        }
     },
     
     addKeyboardHandlers: function(){
@@ -92,8 +130,13 @@ var GameLayer = cc.LayerColor.extend({
     },
     
     onkeydown: function( keyCode ){
-        if( keyCode == 82 ){
-            cc.director.runScene(new StartScene());
+        if( keyCode == 32 && this.start == false ){
+            this.start = true;
+            this.removeChild( this.howToButton );
+            this.removeChild( this.startLable );
+        }
+        else if( keyCode == 8 ){
+            cc.director.runScene(new MenuScene());
         }
     },
     
@@ -199,7 +242,7 @@ var GameLayer = cc.LayerColor.extend({
                     this.removeChild( this.foods[i] );
                 }
                 
-                else if( foodPos.y < 0 ){
+                else if( foodPos.y < 70 ){
                     this.removeChild( this.foods[i] );
                 }
             }
@@ -215,7 +258,7 @@ var GameLayer = cc.LayerColor.extend({
                     this.removeChild( this.foods[i] );
                 }
                 
-                else if( this.checkCollide( this.player2, this.foods[i], 35 ) ){4
+                else if( this.checkCollide( this.player2, this.foods[i], 35 ) ){
                     if( this.foods[i] instanceof Power || this.foods[i] instanceof Slow ){
                         this.foods[i].effect( this.player1 );
                     }
@@ -223,7 +266,7 @@ var GameLayer = cc.LayerColor.extend({
                     this.removeChild( this.foods[i] );
                 }
                 
-                else if( itemPos.y < 0 ){
+                else if( itemPos.y < 70 ){
                     this.removeChild( this.foods[i] );
                 }
             }
@@ -255,13 +298,13 @@ var GameLayer = cc.LayerColor.extend({
         }
         else if( this.time == 0 ){
             this.unscheduleUpdate();
-            /*
+            
             var drawer = cc.DrawNode.create();
             this.addChild( drawer );
             if( this.score1 > this.score2 ){
                 drawer.drawRect( cc.p( 200, 200 ), cc.p( 620, 435 ), new cc.Color( 255, 192 ,203 ), 5, new cc.Color( 0,0,255  ) );
             }
-            else{ drawer.drawRect( cc.p( 200, 200 ), cc.p( 620, 435 ), new cc.Color( 0,0,255 ), 5, new cc.Color( 255, 192 ,203  ) ); }*/
+            else{ drawer.drawRect( cc.p( 200, 200 ), cc.p( 620, 435 ), new cc.Color( 0,0,255 ), 5, new cc.Color( 255, 192 ,203  ) ); }
         }
     },
     

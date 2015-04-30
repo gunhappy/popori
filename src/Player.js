@@ -76,7 +76,9 @@ var Player = cc.Sprite.extend({
     },
     
     speedUP: function(){
-        this.speed += 1;
+        if( this.speed < 6 ){
+            this.speed += 1;
+        }
     },
     
     speedDown: function(){
@@ -87,6 +89,6 @@ var Player = cc.Sprite.extend({
 });
 
 Player.MOVE_DIR = {
-    Player1: [cc.KEY.left,cc.KEY.right,cc.KEY.up],
-    Player2: [cc.KEY.a,cc.KEY.d,cc.KEY.w] 
+    Player1: [cc.KEY.left,cc.KEY.right,cc.KEY.up,cc.KEY.space],
+    Player2: [cc.KEY.a,cc.KEY.d,cc.KEY.w,cc.KEY.up,cc.KEY.space] 
 };
