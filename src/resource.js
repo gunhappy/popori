@@ -26,7 +26,8 @@ var res = {
     Life_pic : "res/images/item/life.png",
     ArrowLeft_pic : "res/images/arrowleft.png",
     ArrowRight_pic : "res/images/arrowright.png",
-    ArrowDown_pic : "res/images/arrowdown.png"
+    ArrowDown_pic : "res/images/arrowdown.png",
+    //Menu_song : "res/songs/menusong.mp3"
 };
 
 var g_resources = [];

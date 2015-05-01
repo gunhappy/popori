@@ -5,7 +5,13 @@ var MainMenu = cc.LayerColor.extend({
         this.setPosition( new cc.Point( 0, 0 ) );
         this.initBackground();
         this.initButton();
-        return true;
+        this.scheduleUpdate();
+        cc.audioEngine.playMusic( 'res/songs/menusong.mp3', true );
+        return true; 
+    },
+    
+    update: function(){
+      
     },
     
     initBackground: function(){
@@ -23,6 +29,7 @@ var MainMenu = cc.LayerColor.extend({
             res.SingleText1,
             res.SingleText2,
             function () {
+                cc.audioEngine.stopMusic();
     			cc.director.runScene(new SingleScene() );
     		}, this);
         this.singleButton = new cc.Menu(this.singleButton);

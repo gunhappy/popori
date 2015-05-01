@@ -79,8 +79,8 @@ var SingleMode = cc.LayerColor.extend({
             function () {
     			cc.director.runScene(new MenuScene() );
     		}, this);
-        this.howToButton = new cc.Menu(this.howToButton);
-    	this.addChild(this.howToButton);
+        this.howToButton = new cc.Menu( this.howToButton );
+    	this.addChild( this.howToButton );
         this.howToButton.setPosition( screenWidth/2 , screenHeight-200 );
     },
     
@@ -147,7 +147,7 @@ var SingleMode = cc.LayerColor.extend({
         var randNum = Math.floor( Math.random() * 2000 );
         var randPosX = Math.floor( Math.random() * screenWidth );
 
-        if( randNum == 1 ){            
+        if( randNum == 2 ){            
             this.item = new Life();
             this.addChild( this.item );
             this.item.setPosition( new cc.Point( randPosX,screenHeight ) );
@@ -172,18 +172,18 @@ var SingleMode = cc.LayerColor.extend({
     
     randFoodType: function(){
         var randNum = Math.floor( Math.random() * 32 );
-        if( randNum == 1|| randNum == 2|| randNum == 3|| randNum == 4|| randNum == 5){
+        if( randNum >= 1 && randNum <= 5){
             this.food = new Croissant(); }
-        else if( randNum == 6|| randNum == 7|| randNum == 8|| randNum == 9 ){
+        else if( randNum >= 6 && randNum <= 9 ){
             this.food = new Cream();
         }
-        else if( randNum == 10|| randNum == 11|| randNum == 12|| randNum == 13 ){
+        else if( randNum >= 10 && randNum <= 13 ){
             this.food = new Sandwich();
         }
-        else if( randNum == 14|| randNum == 15|| randNum == 16 ){
+        else if( randNum >= 14 && randNum <= 16 ){
             this.food = new Pizza();
         }
-        else if( randNum == 17|| randNum == 18|| randNum == 19 ){
+        else if( randNum >= 17 && randNum <= 19 ){
             this.food = new Donut();
         }
         else if( randNum == 20 ){
@@ -192,7 +192,7 @@ var SingleMode = cc.LayerColor.extend({
         else if( randNum == 22 ){
             this.food = new Macaroon();
         }
-        else if( randNum == 24|| randNum == 25|| randNum == 26 ){
+        else if( randNum >= 24 && randNum <= 26 ){
             this.food = new Unji();
         }
         else{
@@ -265,7 +265,7 @@ var SingleMode = cc.LayerColor.extend({
     },
     
     addArrow: function(){
-        var rateRandom = 3000 - ( this.time*30 ) ;
+        var rateRandom = 1300 - ( this.time*5 ) ;
         
         if( rateRandom < 200 ){
             rateRandom = 200;
