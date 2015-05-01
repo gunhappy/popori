@@ -265,7 +265,7 @@ var SingleMode = cc.LayerColor.extend({
     },
     
     addArrow: function(){
-        var rateRandom = 3000 - ( this.time*20 ) ;
+        var rateRandom = 3000 - ( this.time*30 ) ;
         
         if( rateRandom < 200 ){
             rateRandom = 200;
