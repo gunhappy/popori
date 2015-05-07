@@ -1,5 +1,7 @@
 var res = {
     MenuBackground : "res/images/menu.jpg",
+    HowToSingleBackground : "res/images/howToSingle.jpg",
+    HowToMultiBackground : "res/images/howToMulti.jpg",
     Background_png : "res/images/background.png",
     TitleText : "res/images/popori.png",
     SingleText1 : "res/images/singleplayer1.png",
@@ -8,6 +10,11 @@ var res = {
     MultiText2 : "res/images/multiplayer2.png",
     HowTo1Text : "res/images/howTo1.png",
     HowTo2Text : "res/images/howTo2.png",
+    BackToMenu1 : "res/images/backToMenu1.png",
+    BackToMenu2 : "res/images/backToMenu2.png",
+    BackButton1 : "res/images/back1.png",
+    RetryButton1 : "res/images/retry1.png",
+    RetryButton2 : "res/images/retry2.png",
     Player1_pic : "res/images/player1.png",
     Player2_pic : "res/images/player2.png",
     Cream_pic : "res/images/food/cream.png",
@@ -27,7 +34,12 @@ var res = {
     ArrowLeft_pic : "res/images/arrowleft.png",
     ArrowRight_pic : "res/images/arrowright.png",
     ArrowDown_pic : "res/images/arrowdown.png",
-    //Menu_song : "res/songs/menusong.mp3"
+    Menu_song : "res/songs/menusong.mp3",
+    Eat_effect : "res/songs/eat.mp3",
+    GetItem_effect : "res/songs/getitem.wav",
+    HitArrow_effect : "res/songs/hitarrow.mp3",
+    Game_song : "res/songs/gamesong.mp3",
+    Collide_effect : "res/songs/collide.mp3"
 };
 
 var g_resources = [];

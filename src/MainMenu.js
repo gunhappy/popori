@@ -6,12 +6,12 @@ var MainMenu = cc.LayerColor.extend({
         this.initBackground();
         this.initButton();
         this.scheduleUpdate();
-        cc.audioEngine.playMusic( 'res/songs/menusong.mp3', true );
+        
         return true; 
     },
     
     update: function(){
-      
+        cc.audioEngine.playMusic( res.Menu_song, true );
     },
     
     initBackground: function(){
@@ -30,6 +30,7 @@ var MainMenu = cc.LayerColor.extend({
             res.SingleText2,
             function () {
                 cc.audioEngine.stopMusic();
+                this.unscheduleUpdate();
     			cc.director.runScene(new SingleScene() );
     		}, this);
         this.singleButton = new cc.Menu(this.singleButton);
@@ -40,6 +41,8 @@ var MainMenu = cc.LayerColor.extend({
             res.MultiText1,
             res.MultiText2,
             function () {
+                cc.audioEngine.stopMusic();
+                this.unscheduleUpdate();
     			cc.director.runScene(new StartScene() );
     		}, this);
         this.multiButton = new cc.Menu(this.multiButton);

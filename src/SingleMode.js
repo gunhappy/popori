@@ -44,7 +44,7 @@ var SingleMode = cc.LayerColor.extend({
         this.textLabel.setColor( new cc.Color( 255, 192 ,203 ) );
         
         this.startLabel = cc.LabelTTF.create( '0','Cooper Black',40 );
-        this.startLabel.setPosition( new cc.Point( screenWidth/2 ,screenHeight/2 ) );
+        this.startLabel.setPosition( new cc.Point( screenWidth/2 ,(screenHeight/2)-80 ) );
         this.addChild( this.startLabel );
         this.startLabel.setString( "< PRESS SPACEBAR TO START >" );
         this.startLabel.setColor( new cc.Color( 0, 0 ,0 ) );
@@ -73,19 +73,44 @@ var SingleMode = cc.LayerColor.extend({
         this.textLabel2.setString( "High Score" );
         this.textLabel2.setColor( new cc.Color( 0,0,255 ) );
         
+        this.endLabel = cc.LabelTTF.create( '0','Cooper Black',60 );
+        this.endLabel.setPosition( new cc.Point( screenWidth/2 , (screenHeight/2)+100 ) );
+        this.endLabel.setString( "G A M E O V E R" );
+        this.endLabel.setColor( new cc.Color( 255, 0 ,0 ) );
+        
         this.howToButton =  new cc.MenuItemImage(
             res.HowTo1Text,
             res.HowTo2Text,
             function () {
-    			cc.director.runScene(new MenuScene() );
+    			cc.director.runScene(new HowToSingleScene() );
     		}, this);
         this.howToButton = new cc.Menu( this.howToButton );
     	this.addChild( this.howToButton );
         this.howToButton.setPosition( screenWidth/2 , screenHeight-200 );
+        
+        this.backMenuButton =  new cc.MenuItemImage(
+            res.BackToMenu1,
+            res.BackToMenu2,
+            function () {
+    			cc.director.runScene(new MenuScene() );
+    		}, this);
+        this.backMenuButton = new cc.Menu( this.backMenuButton );
+        this.addChild( this.backMenuButton );
+        this.backMenuButton.setPosition( (screenWidth/2), screenHeight/2 );
+        
+        this.retryButton =  new cc.MenuItemImage(
+            res.RetryButton1,
+            res.RetryButton2,
+            function () {
+    			cc.director.runScene(new SingleScene() );
+    		}, this);
+        this.retryButton = new cc.Menu( this.retryButton );
+        this.retryButton.setPosition( (screenWidth/2) , screenHeight/2 );
     },
     
     update: function(dt){
         if( this.start == true ){
+            cc.audioEngine.playMusic( res.Game_song, true );
             this.randomSpawnFood();
             this.randomSpawnItem();
             this.addArrow();
@@ -125,9 +150,7 @@ var SingleMode = cc.LayerColor.extend({
             this.start = true;
             this.removeChild( this.howToButton );
             this.removeChild( this.startLabel );
-        }
-        else if( keyCode == 8 ){
-            cc.director.runScene(new MenuScene());
+            this.removeChild( this.backMenuButton );
         }
     },
     
@@ -214,6 +237,7 @@ var SingleMode = cc.LayerColor.extend({
                     }
                     else{ this.score += this.foods[i].getScore(); }
                     this.scoreLabel.setString( this.score );
+                    cc.audioEngine.playEffect( res.Eat_effect );
                     this.removeChild( this.foods[i] );
                 }
                 
@@ -231,6 +255,7 @@ var SingleMode = cc.LayerColor.extend({
                         this.lifeLabel.setString( this.life );
                     }
                     else { this.foods[i].effect( this.player1 ); }
+                    cc.audioEngine.playEffect( res.GetItem_effect );
                     this.removeChild( this.foods[i] );
                 }
                 
@@ -248,6 +273,7 @@ var SingleMode = cc.LayerColor.extend({
                     }
                     else { this.life -= 1; }
                     this.lifeLabel.setString( this.life );
+                    cc.audioEngine.playEffect( res.HitArrow_effect );
                     this.removeChild( this.foods[i] );
                 }
                 
@@ -270,7 +296,7 @@ var SingleMode = cc.LayerColor.extend({
         if( rateRandom < 200 ){
             rateRandom = 200;
         }
-        console.log( rateRandom );
+        
         var randNum = Math.floor( Math.random() * rateRandom );
         if( randNum == 1 ){
             this.arrow = new ArrowRight();
@@ -296,6 +322,8 @@ var SingleMode = cc.LayerColor.extend({
         if( this.life == 0 ){
             this.start = false;
             this.unscheduleUpdate();
+            this.addChild( this.endLabel );
+            this.addChild( this.retryButton );
         }
     },
     

@@ -34,7 +34,7 @@ var GameLayer = cc.LayerColor.extend({
     initLabel: function(){
         this.score1 =0;
         this.score2 =0;
-        this.time = 120;
+        this.time = 10;
         
         this.scoreLabel1 = cc.LabelTTF.create( '0','Cooper Black',40 );
         this.scoreLabel1.setPosition( new cc.Point( 700,500 ) );
@@ -73,7 +73,7 @@ var GameLayer = cc.LayerColor.extend({
         this.timeLabel.setColor( new cc.Color( 178, 0 ,25 ) );
         
         this.startLabel = cc.LabelTTF.create( '0','Cooper Black',40 );
-        this.startLabel.setPosition( new cc.Point( screenWidth/2 ,screenHeight/2 ) );
+        this.startLabel.setPosition( new cc.Point( screenWidth/2 ,(screenHeight/2)-80 ) );
         this.addChild( this.startLabel );
         this.startLabel.setString( "< PRESS SPACEBAR TO START >" );
         this.startLabel.setColor( new cc.Color( 0, 0 ,0 ) );
@@ -82,15 +82,26 @@ var GameLayer = cc.LayerColor.extend({
             res.HowTo1Text,
             res.HowTo2Text,
             function () {
+    			cc.director.runScene( new HowToMultiScene() );
+    		}, this);
+        this.howToButton = new cc.Menu( this.howToButton );
+    	this.addChild( this.howToButton );
+        this.howToButton.setPosition( screenWidth/2 , screenHeight-200 );
+        
+        this.backMenuButton =  new cc.MenuItemImage(
+            res.BackToMenu1,
+            res.BackToMenu2,
+            function () {
     			cc.director.runScene(new MenuScene() );
     		}, this);
-        this.howToButton = new cc.Menu(this.howToButton);
-    	this.addChild(this.howToButton);
-        this.howToButton.setPosition( screenWidth/2 , screenHeight-200 );
+        this.backMenuButton = new cc.Menu( this.backMenuButton );
+    	this.addChild( this.backMenuButton );
+        this.backMenuButton.setPosition( screenWidth/2 , screenHeight/2 );
     },
     
     update: function(dt){
         if( this.start == true ){
+            cc.audioEngine.playMusic( res.Game_song, true );
             this.randomSpawnFood();
             this.randomSpawnItem();
             this.addArrow();
@@ -122,9 +133,6 @@ var GameLayer = cc.LayerColor.extend({
             this.start = true;
             this.removeChild( this.howToButton );
             this.removeChild( this.startLabel );
-        }
-        else if( keyCode == 8 ){
-            cc.director.runScene(new MenuScene());
         }
     },
     
@@ -176,18 +184,18 @@ var GameLayer = cc.LayerColor.extend({
     
     randFoodType: function(){
         var randNum = Math.floor( Math.random() * 32 );
-        if( randNum == 1|| randNum == 2|| randNum == 3|| randNum == 4|| randNum == 5){
+        if( randNum >= 1 && randNum <= 5){
             this.food = new Croissant(); }
-        else if( randNum == 6|| randNum == 7|| randNum == 8|| randNum == 9 ){
+        else if( randNum >= 6 && randNum <= 9 ){
             this.food = new Cream();
         }
-        else if( randNum == 10|| randNum == 11|| randNum == 12|| randNum == 13 ){
+        else if( randNum >= 10 && randNum <= 13 ){
             this.food = new Sandwich();
         }
-        else if( randNum == 14|| randNum == 15|| randNum == 16 ){
+        else if( randNum >= 14 && randNum <= 16 ){
             this.food = new Pizza();
         }
-        else if( randNum == 17|| randNum == 18|| randNum == 19 ){
+        else if( randNum >= 17 && randNum <= 19 ){
             this.food = new Donut();
         }
         else if( randNum == 20 ){
@@ -196,7 +204,7 @@ var GameLayer = cc.LayerColor.extend({
         else if( randNum == 22 ){
             this.food = new Macaroon();
         }
-        else if( randNum == 24|| randNum == 25|| randNum == 26 ){
+        else if( randNum >= 24 && randNum <= 26 ){
             this.food = new Unji();
         }
         else{
@@ -218,6 +226,7 @@ var GameLayer = cc.LayerColor.extend({
                     }
                     else{ this.score1 += this.foods[i].getScore(); }
                     this.scoreLabel1.setString( this.score1 );
+                    cc.audioEngine.playEffect( res.Eat_effect );
                     this.removeChild( this.foods[i] );
                 }
                 
@@ -227,6 +236,7 @@ var GameLayer = cc.LayerColor.extend({
                     }
                     else{ this.score2 += this.foods[i].getScore(); }
                     this.scoreLabel2.setString( this.score2 );
+                    cc.audioEngine.playEffect( res.Eat_effect );
                     this.removeChild( this.foods[i] );
                 }
                 
@@ -243,6 +253,7 @@ var GameLayer = cc.LayerColor.extend({
                         this.foods[i].effect( this.player2 );
                     }
                     else { this.foods[i].effect( this.player1 ); }
+                    cc.audioEngine.playEffect( res.GetItem_effect );
                     this.removeChild( this.foods[i] );
                 }
                 
@@ -251,6 +262,7 @@ var GameLayer = cc.LayerColor.extend({
                         this.foods[i].effect( this.player1 );
                     }
                     else { this.foods[i].effect( this.player2 ); }
+                    cc.audioEngine.playEffect( res.GetItem_effect );
                     this.removeChild( this.foods[i] );
                 }
                 
@@ -268,6 +280,7 @@ var GameLayer = cc.LayerColor.extend({
                     }
                     else { this.score1 -= 10; }
                     this.scoreLabel1.setString( this.score1 );
+                    cc.audioEngine.playEffect( res.HitArrow_effect );
                     this.removeChild( this.foods[i] );
                 }
                 
@@ -277,6 +290,7 @@ var GameLayer = cc.LayerColor.extend({
                     }
                     else { this.score2 -= 10; }
                     this.scoreLabel2.setString( this.score2 );
+                    cc.audioEngine.playEffect( res.HitArrow_effect );
                     this.removeChild( this.foods[i] );
                 }
                 
@@ -295,6 +309,7 @@ var GameLayer = cc.LayerColor.extend({
     
     checkPlayerCollide: function(){
         if( this.checkCollide( this.player1, this.player2, 55 )){
+            cc.audioEngine.playEffect( res.Collide_effect );
             if( this.player1.getPositionX() < this.player2.getPositionX() ){
                 this.player1.reboundLeft();
                 this.player2.reboundRight();    
@@ -302,7 +317,7 @@ var GameLayer = cc.LayerColor.extend({
             else {
                 this.player2.reboundLeft();
                 this.player1.reboundRight();
-             }
+            }
         }
     },
     
@@ -335,12 +350,10 @@ var GameLayer = cc.LayerColor.extend({
         else if( this.time == 0 ){
             this.unscheduleUpdate();
             
-            var drawer = cc.DrawNode.create();
-            this.addChild( drawer );
             if( this.score1 > this.score2 ){
-                drawer.drawRect( cc.p( 200, 200 ), cc.p( 620, 435 ), new cc.Color( 255, 192 ,203 ), 5, new cc.Color( 0,0,255  ) );
+                
             }
-            else{ drawer.drawRect( cc.p( 200, 200 ), cc.p( 620, 435 ), new cc.Color( 0,0,255 ), 5, new cc.Color( 255, 192 ,203  ) ); }
+            else{  }
         }
     },
     
