@@ -34,7 +34,7 @@ var GameLayer = cc.LayerColor.extend({
     initLabel: function(){
         this.score1 =0;
         this.score2 =0;
-        this.time = 4;
+        this.time = 120;
         
         this.scoreLabel1 = cc.LabelTTF.create( '0','Cooper Black',40 );
         this.scoreLabel1.setPosition( new cc.Point( 700,500 ) );
