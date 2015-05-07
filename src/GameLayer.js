@@ -34,7 +34,7 @@ var GameLayer = cc.LayerColor.extend({
     initLabel: function(){
         this.score1 =0;
         this.score2 =0;
-        this.time = 10;
+        this.time = 4;
         
         this.scoreLabel1 = cc.LabelTTF.create( '0','Cooper Black',40 );
         this.scoreLabel1.setPosition( new cc.Point( 700,500 ) );
@@ -78,6 +78,26 @@ var GameLayer = cc.LayerColor.extend({
         this.startLabel.setString( "< PRESS SPACEBAR TO START >" );
         this.startLabel.setColor( new cc.Color( 0, 0 ,0 ) );
         
+        this.endLabel = cc.LabelTTF.create( '0','Cooper Black',60 );
+        this.endLabel.setPosition( new cc.Point( screenWidth/2 , (screenHeight/2)+140 ) );
+        this.endLabel.setString( "T I M E O U T" );
+        this.endLabel.setColor( new cc.Color( 255, 0 ,0 ) );
+        
+        this.player1Win = cc.LabelTTF.create( '0','Cooper Black',60 );
+        this.player1Win.setPosition( new cc.Point( screenWidth/2 , (screenHeight/2)+50 ) );
+        this.player1Win.setString( "Player 1  Win !!" );
+        this.player1Win.setColor( new cc.Color( 255, 192 ,203 ) );
+        
+        this.player2Win = cc.LabelTTF.create( '0','Cooper Black',60 );
+        this.player2Win.setPosition( new cc.Point( screenWidth/2 , (screenHeight/2)+50 ) );
+        this.player2Win.setString( "Player 2  Win !!" );
+        this.player2Win.setColor( new cc.Color( 0,0,255 ) );
+        
+        this.draw = cc.LabelTTF.create( '0','Cooper Black',60 );
+        this.draw.setPosition( new cc.Point( screenWidth/2 , (screenHeight/2)+50 ) );
+        this.draw.setString( "D R A W" );
+        this.draw.setColor( new cc.Color( 255,0,255 ) );
+        
         this.howToButton =  new cc.MenuItemImage(
             res.HowTo1Text,
             res.HowTo2Text,
@@ -97,6 +117,15 @@ var GameLayer = cc.LayerColor.extend({
         this.backMenuButton = new cc.Menu( this.backMenuButton );
     	this.addChild( this.backMenuButton );
         this.backMenuButton.setPosition( screenWidth/2 , screenHeight/2 );
+        
+        this.retryButton =  new cc.MenuItemImage(
+            res.RetryButton1,
+            res.RetryButton2,
+            function () {
+    			cc.director.runScene(new StartScene() );
+    		}, this);
+        this.retryButton = new cc.Menu( this.retryButton );
+        this.retryButton.setPosition( (screenWidth/2) , (screenHeight/2)-50 );
     },
     
     update: function(dt){
@@ -133,6 +162,7 @@ var GameLayer = cc.LayerColor.extend({
             this.start = true;
             this.removeChild( this.howToButton );
             this.removeChild( this.startLabel );
+            this.removeChild( this.backMenuButton );
         }
     },
     
@@ -349,11 +379,17 @@ var GameLayer = cc.LayerColor.extend({
         }
         else if( this.time == 0 ){
             this.unscheduleUpdate();
-            
+            this.addChild( this.endLabel );
+            this.addChild( this.retryButton );
             if( this.score1 > this.score2 ){
-                
+                this.addChild( this.player2Win );
             }
-            else{  }
+            
+            else if( this.score2 > this.score1 ){
+                this.addChild( this.player1Win );
+            }
+                
+            else{ this.addChild( this.draw ); }
         }
     },
     
